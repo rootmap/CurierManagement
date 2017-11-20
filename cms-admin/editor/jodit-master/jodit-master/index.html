@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <!--<meta http-equiv="x-ua-compatible" content="IE=8">-->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Jodit Example</title>
+    <script>
+        var simulateEvent = function (type, keyCodeArg, element, options) {
+            var evt = document.createEvent('HTMLEvents')
+            evt.initEvent(type, true, true);
+            evt.keyCode = keyCodeArg;
+            evt.which = keyCodeArg;
+            if (options) {
+                options(evt);
+            }
+            element.dispatchEvent(evt);
+        }
+    </script>
+</head>
+<body>
+    <table style="width:100%">
+        <tr>
+            <td id="maintab" style="width:50%;vertical-align: top">
+                <div id="uniqbox" class="box">
+                    <textarea id="area_editor"></textarea>
+                </div>
+            </td>
+            <td id="mirrortab"><textarea readonly disabled id="mirror"></textarea></td>
+        </tr>
+    </table>
+    <style>
+        body {
+            font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        @media(max-width: 400px) {
+            #maintab {
+                width: 100%!important;
+            }
+            #mirrortab {
+                display: none !important;
+            }
+        }
+    </style>
+</body>
+<link rel="stylesheet" href="build/jodit.min.css" />
+<link rel="stylesheet" href="app.css" />
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i" rel="stylesheet">
+
+<script src="build/jodit.min.js"></script>
+</html>
+
+<script>
+    if (String.prototype.repeat === undefined) {
+        String.prototype.repeat = function (count) {
+            var result = [];
+            for (var i = 0; i < count; i++) {
+                result.push(this);
+            }
+            return result.join('');
+        };
+    }
+    Jodit.defaultOptions.iframeCSSLinks.push('app.css');
+    Jodit.defaultOptions.iframeStyle += "* {\
+    -webkit-box-sizing: border-box;\
+    -moz-box-sizing: border-box;\
+    box-sizing: border-box;\
+}";
+    function expect(value) {
+        var equal = function (val) {
+            console.log(value === val);
+        };
+        return {
+            to: {
+                equal: equal,
+                be: {
+                    equal: equal
+                }
+            }
+        };
+    }
+    editor = new Jodit('#area_editor', {
+//        useAceEditor: false,
+//        theme: 'dark',
+//        textIcons: true,
+//      iframe: true,
+//        width: 400,
+        height: 300,
+//        defaultMode: Jodit.MODE_SPLIT,
+        observer: {
+            timeout: 0
+        },
+        uploader: {
+            url: 'https://xdsoft.net/jodit/connector/index.php?action=upload'
+        },
+        filebrowser: {
+            ajax: {
+                url: 'https://xdsoft.net/jodit/connector/index.php'
+            }
+        },
+        //debugLanguage: true,
+        buttons: Jodit.defaultOptions.buttons.concat([
+            {
+                name: 'insertDate',
+                iconURL: 'https://xdsoft.net/jodit/images/logo.png',
+                exec: function (editor) {
+                    editor.selection.insertHTML((new Date).toDateString());
+                }
+            }
+        ])
+    });
+
+    function simpleKeys (original) {
+        var newobject = {};
+        for(var key in original) {
+            newobject[key] = typeof original[key] === 'object' ? '{ ... }' : original[key];
+        }
+        return newobject;
+    }
+    var timeout,
+        callback = function (e) {
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                mirror.value = editor.editor ? editor.editor.innerHTML : '';
+            }, 100)
+        }
+    editor.events.on('change', callback)
+    editor.editor.addEventListener('keydown', callback)
+    editor.editor.addEventListener('keyup', callback)
+    editor.editor.addEventListener('mousedown', callback)
+    editor.editor.addEventListener('mouseup', callback)
+    editor.editor.addEventListener('input', callback);
+
+//    var editor = new Jodit(appendTestArea())
+
+//    (new Jodit.modules.FileBrowser(editor)).open(function () {});
+//    expect(document.querySelectorAll('.jodit_dialog_box.active').length).to.be.equal(1);
+
+//    expect(editor.getEditorValue()).to.be.equal('<p></p><p> a </p>');
+
+//    expect(editor.getEditorValue()).to.be.equal('<ul>' +
+//        '<li>1</li>' +
+//        '<li>2</li>' +
+//        '</ul>' + '<p>split <img src="https://xdsoft.net/jodit/images/artio.jpg"></p>');
+
+
+//    editor.setEditorValue('<table><tbody>' +
+//        '<tr><td>3</td></tr>' +
+//        '<tr><td>2</td></tr>' +
+//        '</tbody></table>');
+
+//    var dialogs = document.querySelectorAll('.jodit.jodit_dialog_box.jodit_text_icons.active');
+//    expect(dialogs.length).toWYSIWYG.equal(1);
+
+//    callback();
+</script>

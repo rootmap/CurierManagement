@@ -1,0 +1,65 @@
+{
+  "name": "jodit",
+  "version": "3.0.35",
+  "description": "Jodit is awesome and usefully wysiwyg editor with filebrowser",
+  "main": "index.js",
+  "scripts": {
+    "newversion": "npm version patch --no-git-tag-version && npm run build && npm run newversiongit && npm publish ./",
+    "newversiongit": "git add --all  && git commit -m \"New version %npm_package_version%. Read more https://github.com/xdan/jodit/releases/tag/%npm_package_version% \" && git tag %npm_package_version% && git push --tags origin HEAD:master",
+    "start": "node server.js",
+    "build": "rm -f build/* && cross-env NODE_ENV=production webpack --progress",
+    "test": "karma start --browsers Firefox karma.conf.js --single-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xdan/jodit.git"
+  },
+  "keywords": [
+    "wysiwyg",
+    "editor",
+    "rich",
+    "jodit"
+  ],
+  "author": "Chupurnov <chupurnov@gmail.com> (https://xdsoft.net/)",
+  "license": "SEE LICENSE IN <LICENSE>",
+  "bugs": {
+    "url": "https://github.com/xdan/jodit/issues"
+  },
+  "homepage": "https://xdsoft.net/jodit/",
+  "devDependencies": {
+    "@types/ace": "^0.0.35",
+    "@types/node": "^7.0.39",
+    "autoprefixer": "^6.7.7",
+    "awesome-typescript-loader": "^3.2.1",
+    "chai": "^3.5.0",
+    "classlist-polyfill": "^1.2.0",
+    "clean-css-loader": "0.0.4",
+    "compression": "^1.7.1",
+    "cross-env": "^3.2.4",
+    "css-loader": "^0.26.4",
+    "express": "^4.16.1",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.10.1",
+    "karma": "^1.7.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-mocha": "^1.3.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.4",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
+    "mocha": "^3.4.2",
+    "postcss-loader": "^2.0.6",
+    "precss": "^2.0.0",
+    "style-loader": "^0.13.2",
+    "svg-inline-loader": "^0.7.1",
+    "typescript": "^2.5.3",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.6.0",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-dev-server": "^2.9.1",
+    "webpack-hot-middleware": "^2.19.1"
+  }
+}

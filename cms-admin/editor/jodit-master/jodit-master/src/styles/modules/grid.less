@@ -1,0 +1,23 @@
+@import (reference) "../variables";
+@import (reference) "../mixins";
+
+.jodit_grid {
+  width: 100%;
+  [class*=jodit_col-] {
+    display: block;
+    float: left;
+  }
+  .jodit_col-lg {
+    &-2-5 {
+      width: (100%/5) * 2;
+    }
+    &-3-5 {
+      width: (100%/5) * 3;
+    }
+    &-1-5 {
+      width: (100%/5) * 1;
+    }
+  }
+
+  .clearfix();
+}
