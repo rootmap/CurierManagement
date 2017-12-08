@@ -88,7 +88,7 @@
 							
                             <div class="widget-body"><form  class="form-horizontal" method="post" action="" role="form">
 								<input type="hidden" name="id" value="<?php echo $_GET['edit']; ?>"><div class='form-group'>
-                            <label  for="inputEmail3" class="col-sm-2 control-label"> Division ID </label>
+                            <label  for="inputEmail3" class="col-sm-2 control-label"> Division  </label>
 
                             <div class='col-sm-9'>
                                     <select id='form-field-1' name='division_id' class='form-control'><option value='0'>Please Select</option><?php 
@@ -99,15 +99,21 @@
                             foreach ($sqldivision_id as $division_id): ?><option <?php if($division_id->id==$ex_division_id_data){ ?> selected='selected' <?php } ?> value='<?=$division_id->id?>'><?=$division_id->name?></option><?php endforeach; ?><?php } ?></select>
                             </div>
                     </div><div class='form-group'>
-                            <label  for="inputEmail3" class="col-sm-2 control-label"> District ID </label>
+                            <label  for="inputEmail3" class="col-sm-2 control-label"> District  </label>
 
                             <div class='col-sm-9'>
-                                    <select id='form-field-1' name='district_id' class='form-control'><option value='0'>Please Select</option><?php 
-                        $ex_district_id_data=$obj->SelectAllByVal($table,'id',$_GET['edit'],'district_id');
-                        $sqldistrict_id=$obj->FlyQuery('SELECT id,name FROM `district`');
-                        if(!empty($sqldistrict_id))
-                        {
-                            foreach ($sqldistrict_id as $district_id): ?><option <?php if($district_id->id==$ex_district_id_data){ ?> selected='selected' <?php } ?> value='<?=$district_id->id?>'><?=$district_id->name?></option><?php endforeach; ?><?php } ?></select>
+                                    <select id='form-field-1' name='district_id' class='form-control'>
+                                        <option value='0'>Please Select</option>
+                                        <?php 
+                                        $ex_district_id_data=$obj->SelectAllByVal($table,'id',$_GET['edit'],'district_id');
+                                        $sqldistrict_id=$obj->FlyQuery("SELECT id,name FROM `district` WHERE division_id='".$ex_division_id_data."'");
+                                        if(!empty($sqldistrict_id))
+                                        {
+                                            foreach ($sqldistrict_id as $district_id): ?>
+                                            <option <?php if($district_id->id==$ex_district_id_data){ ?> selected='selected' <?php } ?> value='<?=$district_id->id?>'><?=$district_id->name?></option>
+                                        <?php endforeach; ?>
+                                        <?php } ?>
+                                    </select>
                             </div>
                     </div><div class='form-group'>
                             <label  for="inputEmail3" class="col-sm-2 control-label"> Branch Name </label>
@@ -149,22 +155,28 @@
                             <!-- // Widget heading END -->
 							
                             <div class="widget-body"><form  class="form-horizontal" method="post" action="" role="form"><div class='form-group'>
-                            <label  for="inputEmail3" class="col-sm-2 control-label"> Division ID </label>
+                            <label  for="inputEmail3" class="col-sm-2 control-label"> Division </label>
 
                             <div class='col-sm-9'>
-                                    <select id='form-field-1' name='division_id' class='form-control'><option value='0'>Please Select</option><?php $sqldivision_id=$obj->FlyQuery('SELECT id,name FROM `division_or_state`');
-                        if(!empty($sqldivision_id))
-                        {
-                            foreach ($sqldivision_id as $division_id): ?><option value='<?=$division_id->id?>'><?=$division_id->name?></option><?php endforeach; ?><?php } ?></select>
+                                    <select id='form-field-1' name='division_id' class='form-control'>
+                                        <option value='0'>Please Select</option>
+                                        <?php $sqldivision_id=$obj->FlyQuery('SELECT id,name FROM `division_or_state`');
+                                                if(!empty($sqldivision_id))
+                                                {
+                                                    foreach ($sqldivision_id as $division_id): ?>
+                                        <option value='<?=$division_id->id?>'><?=$division_id->name?></option>
+                                        <?php endforeach; ?>
+                                        <?php } ?>
+                                    </select>
                             </div>
                     </div><div class='form-group'>
-                            <label  for="inputEmail3" class="col-sm-2 control-label"> District ID </label>
+                            <label  for="inputEmail3" class="col-sm-2 control-label"> District </label>
 
                             <div class='col-sm-9'>
-                                    <select id='form-field-1' name='district_id' class='form-control'><option value='0'>Please Select</option><?php $sqldistrict_id=$obj->FlyQuery('SELECT id,name FROM `district`');
-                        if(!empty($sqldistrict_id))
-                        {
-                            foreach ($sqldistrict_id as $district_id): ?><option value='<?=$district_id->id?>'><?=$district_id->name?></option><?php endforeach; ?><?php } ?></select>
+                                    <select id='form-field-1' name='district_id' class='form-control'>
+                                        <option value='0'>Please Select</option>
+                                        
+                                    </select>
                             </div>
                     </div><div class='form-group'>
                             <label  for="inputEmail3" class="col-sm-2 control-label"> Branch Name </label>
@@ -213,6 +225,25 @@
         <div class="clearfix"></div>
         <!-- // Sidebar menu & content wrapper END -->
         <?php include('include/footer.php'); ?>
+        <script>
+            $(document).ready(function () {
+
+                $("select[name=division_id]").change(function () {
+                    var division_id = $(this).val();
+                    $.post("./controller/district.php", {'division_id': division_id}, function (data) {
+                        var htmlString = '<option value="0">Please Select</option>';
+                        $.each(data, function (i, item) {
+                            console.log(item.name);
+                            htmlString += '<option value="' + item.id + '">' + item.name + '</option>';
+                        });
+
+                        $("select[name=district_id]").html(htmlString);
+
+                    });
+                });
+
+            });
+        </script>
         <!-- // Footer END -->
     </div>
     <!-- // Main Container Fluid END -->

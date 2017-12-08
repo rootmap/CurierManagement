@@ -118,7 +118,11 @@ $plugin=new cmsPlugin();
                         },
                         sortable: true,
                         groupable: true,
-                        columns: [{field: "id", title: "#"},{field: "division_id", title: "Division ID"},{field: "district_id", title: "District ID"},{field: "branch_name", title: "Branch Name"},{field: "location", title: "Location"},{field: "contact_no", title: "Contact No"},{field: "contact_person", title: "Contact Person"},
+                        columns: [{field: "id", title: "#"},
+                        {field: "division_id", title: "Division"},
+                        {field: "district_id", title: "District"},
+                        {field: "branch_name", title: "Branch Name"},
+                        {field: "location", title: "Location"},{field: "contact_no", title: "Contact No"},{field: "contact_person", title: "Contact Person"},
 							{field: "date", title: "Record Added", width: "150px"},
 							{
                                 title: "Edit",

@@ -34,48 +34,21 @@ $plugin = new cmsPlugin();
                 <?php echo $plugin->ShowMsg(); ?>
                 <!---------------------------- Start Here Box Design-------------------->
                 <div class="row">
-
-                    <?php
-                    $sqlmenu_custom = $obj->FlyQuery("SELECT 
-                                            upam.id,
-                                            upam.page_name, 
-                                            upam.page_link_file_name 
-                                            FROM user_access_role as uar
-                                            LEFT JOIN user_page_access_mapping as upam ON uar.user_type_id=upam.user_type_id 
-                                            WHERE uar.user_id='".$formula_id."'");
-                    if (!empty($sqlmenu_custom))
-                        foreach ($sqlmenu_custom as $custom):
-                            ?>
-
-                            <div class="col-md-3 col-sm-6">
-                                <div class="panel-3d">
-                                    <div class="front">
-
-                                        <div class="widget text-center">
-                                            <div class="widget-body padding-none">
-                                                <div>
-                                                    <div class="innerAll bg-info innerAll">
-                                                        <p class="lead text-white strong margin-none"><i class="icon-user-1"></i></p>
-                                                    </div>
-                                                    <div class="innerAll">
-                                                        <a href="<?php echo $custom->page_link_file_name; ?>"><b style="color: brown;"> View <?php echo $custom->page_name; ?> </b></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-                            <?php
-                        endforeach;
-                    ?>
-
-
-
-
-
+                    <style type="text/css">
+                            tbody:empty:before {
+                                content:'Data Not Found';
+                                font-size: 19px; font-weight: bold;
+                            }
+                        </style>
+                        <h3 class="content-heading">Today's Invoice</h3>
+                    
+                        <div class="col-sm-12" id="invoice_41"></div>
+                        <div style="clear: both;"></div>
+                        <h3 class="content-heading">This Month Invoice</h3>
+                        <div class="col-sm-12" id="invoice_42"></div>
+                         <div style="clear: both;"></div>
+                        <h3 class="content-heading">This Year Invoice</h3>
+                        <div class="col-sm-12" id="invoice_43"></div>
                 </div>
 
 
@@ -100,7 +73,7 @@ $plugin = new cmsPlugin();
             //include('include/topnav.php');
             //include('include/mainnav.php');
             ?>
-            
+
             <!-- // Spare Parts END -->
 
             <!--                <div class="clearfix"></div>-->
@@ -112,8 +85,8 @@ $plugin = new cmsPlugin();
             <!-- // Main Container Fluid END -->
             <!-- Global -->
 
-            
-            
+
+
             <?php
             echo $plugin->TableJs();
             echo $plugin->KendoJS();
@@ -128,6 +101,225 @@ $plugin = new cmsPlugin();
         <!-- // Footer END -->
         <!-- // Main Container Fluid END -->
         <!-- Global -->
+        <script id="edit_invoice" type="text/x-kendo-template">
+            <a class="k-button k-button-icontext k-grid-edit" href="invoice.php?edit=#= id#"><span class="k-icon k-edit"></span>Edit</a>
+            <a class="k-button k-button-icontext k-grid-edit" href="quriar.php?view=#= tracking_no#"><span class="k-icon k-edit"></span>View</a>
+            <a class="k-button k-button-icontext k-grid-edit" href="quriar_status.php?qst=#= tracking_no#"><span class="k-icon k-edit"></span>New Status</a>
+        </script>
+               
+        
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                var postarray = {"id": 1};
+                var dataSource = new kendo.data.DataSource({
+                    pageSize: 5,
+                    transport: {
+                        read: {
+                            url: "./ajax/todays_invoice.php",
+                            type: "POST",
+                            data:
+                                    {
+                                        "acst": 1, //action status sending to json file
+                                        "table": "invoice",
+                                        "cond": 0,
+                                        "multi": postarray
 
+                                    }
+                        }
+                    },
+                    autoSync: false,
+                    schema: {
+                        data: "data",
+                        total: "data.length",
+                        model: {
+                            id: "id",
+                            fields: {
+                                id: {nullable: true},
+                                tracking_no: {type: "string"},
+                                receive_from: {type: "string"},
+                                send_from: {type: "string"},
+                                price: {type: "string"},
+                                conditional_price: {type: "string"},
+                                quriar_status: {type: "string"},
+                                date: {type: "string"}
+                            }
+                        }
+                    }
+                });
+                jQuery("#invoice_41").kendoGrid({
+                    dataSource: dataSource,
+                    filterable: true,
+                     pageable: {
+                        refresh: true,
+                        input: true,
+                        numeric: false,
+                        pageSizes: true,
+                        pageSizes: [5, 10, 20, 50],
+                        messages: {
+                            empty: "No data"
+                        },
+                    },
+                    sortable: true,
+                    groupable: true,
+                    columns: [
+                        {field: "id", title: "#"},
+                        {field: "tracking_no", title: "Tracking No"},
+                        {field: "price", title: "Price"},
+                        {field: "conditional_price", title: "Conditional Price"},
+                        {field: "quriar_status", title: "Quriar Status"},
+                        {field: "date", title: "Record Added", width: "100px"},
+                        {
+                            title: "Edit",
+                            width: "200px",
+                            template: kendo.template($("#edit_invoice").html())
+                        }
+                        
+                    ]
+                });
+            });
+
+        </script>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                var postarray = {"id": 1};
+                var dataSource = new kendo.data.DataSource({
+                    pageSize: 5,
+                    transport: {
+                        read: {
+                            url: "./ajax/month_invoice.php",
+                            type: "POST",
+                            data:
+                                    {
+                                        "acst": 1, //action status sending to json file
+                                        "table": "invoice",
+                                        "cond": 0,
+                                        "multi": postarray
+
+                                    }
+                        }
+                    },
+                    autoSync: false,
+                    schema: {
+                        data: "data",
+                        total: "data.length",
+                        model: {
+                            id: "id",
+                            fields: {
+                                id: {nullable: true},
+                                tracking_no: {type: "string"},
+                                receive_from: {type: "string"},
+                                send_from: {type: "string"},
+                                price: {type: "string"},
+                                conditional_price: {type: "string"},
+                                quriar_status: {type: "string"},
+                                date: {type: "string"}
+                            }
+                        }
+                    }
+                });
+                jQuery("#invoice_42").kendoGrid({
+                    dataSource: dataSource,
+                    filterable: true,
+                     pageable: {
+                        refresh: true,
+                        input: true,
+                        numeric: false,
+                        pageSizes: true,
+                        pageSizes: [5, 10, 20, 50],
+                        messages: {
+                            empty: "No data"
+                        },
+                    },
+                    sortable: true,
+                    groupable: true,
+                    columns: [
+                        {field: "id", title: "#"},
+                        {field: "tracking_no", title: "Tracking No"},
+                        {field: "price", title: "Price"},
+                        {field: "conditional_price", title: "Conditional Price"},
+                        {field: "quriar_status", title: "Quriar Status"},
+                        {field: "date", title: "Record Added", width: "100px"},
+                        {
+                            title: "Edit",
+                            width: "200px",
+                            template: kendo.template($("#edit_invoice").html())
+                        }
+                        
+                    ]
+                });
+            });
+
+        </script>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                var postarray = {"id": 1};
+                var dataSource = new kendo.data.DataSource({
+                    pageSize: 5,
+                    transport: {
+                        read: {
+                            url: "./ajax/year_invoice.php",
+                            type: "POST",
+                            data:
+                                    {
+                                        "acst": 1, //action status sending to json file
+                                        "table": "invoice",
+                                        "cond": 0,
+                                        "multi": postarray
+
+                                    }
+                        }
+                    },
+                    autoSync: false,
+                    schema: {
+                        data: "data",
+                        total: "data.length",
+                        model: {
+                            id: "id",
+                            fields: {
+                                id: {nullable: true},
+                                tracking_no: {type: "string"},
+                                receive_from: {type: "string"},
+                                send_from: {type: "string"},
+                                price: {type: "string"},
+                                conditional_price: {type: "string"},
+                                quriar_status: {type: "string"},
+                                date: {type: "string"}
+                            }
+                        }
+                    }
+                });
+                jQuery("#invoice_43").kendoGrid({
+                    dataSource: dataSource,
+                    filterable: true,
+                     pageable: {
+                        refresh: true,
+                        input: true,
+                        numeric: false,
+                        pageSizes: true,
+                        pageSizes: [5, 10, 20, 50],
+                        messages: {
+                            empty: "No data"
+                        },
+                    },
+                    sortable: true,
+                    groupable: true,
+                    columns: [
+                        {field: "id", title: "#"},
+                        {field: "tracking_no", title: "Tracking No"},
+                        {field: "price", title: "Price"},
+                        {field: "conditional_price", title: "Conditional Price"},
+                        {field: "quriar_status", title: "Quriar Status"},
+                        {field: "date", title: "Record Added", width: "100px"},
+                        {
+                            title: "Edit",
+                            width: "200px",
+                            template: kendo.template($("#edit_invoice").html())
+                        }
+                        
+                    ]
+                });
+            });
+
+        </script>
     </body>
 </html>

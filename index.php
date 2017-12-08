@@ -1,8 +1,13 @@
 <?php 
+session_start();
 include './cms-admin/class/db_Class.php';
 $obj=new db_class();
 
+include("./cms-admin/plugin/plugin.php");
+$plugin = new cmsPlugin();
+
 $siteSettings=$obj->FlyQuery("SELECT * FROM site_settings");
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="wide smoothscroll wow-animation">
@@ -129,6 +134,7 @@ $siteSettings=$obj->FlyQuery("SELECT * FROM site_settings");
         <section class="well-sm bg-primary">
             <div class="container">
                 <div class="row">
+                    <?=$plugin->ShowMsg()?>
                     <div class="col-sm-10 col-sm-preffix-1 col-md-8 col-md-preffix-2 col-lg-6 col-lg-preffix-3">
                         <h2>Track search</h2>
                         <form action="invoice.php" class="search-form" method="get">

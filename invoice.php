@@ -1,4 +1,5 @@
 <?php
+session_start();
 include './cms-admin/class/db_Class.php';
 $obj = new db_class();
 
@@ -6,6 +7,15 @@ $siteSettings = $obj->FlyQuery("SELECT * FROM site_settings");
 
 include("./cms-admin/plugin/plugin.php");
 $plugin = new cmsPlugin();
+
+$quriar_string_count = "SELECT * FROM invoice as i WHERE i.tracking_no='" . $_GET['view'] . "'";
+$quriar_detail_count = $obj->FlyQuery($quriar_string_count);
+
+if(empty($quriar_detail_count))
+{
+    $plugin->Error("Invalid Tracking No.","index.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="wide smoothscroll wow-animation">
@@ -66,6 +76,7 @@ $plugin = new cmsPlugin();
                         dt.name as delivery_type,
                         i.delivery_area, 
                         i.price, 
+                        i.conditional_price, 
                         i.quriar_detail, 
                         i.special_remarks, 
                         i.quriar_status, 
@@ -99,20 +110,80 @@ $plugin = new cmsPlugin();
                                     <h2 align="left">Quriar Info</h2><h3 class="pull-right">Tracking No # <?= $_GET['view'] ?></h3>
                                 </div>
                                 <hr>
-                                <div class="row">
-                                    <div class="col-xs-6">
+                                <style type="text/css">
+                                    .bolder{font-weight: bolder;}
+                                </style>
+                                    <div class="col-xs-6 text-left">
                                         <address>
                                             <strong>Sender Detail:</strong><br>
-                                            <?= html_entity_decode($quriar_detail[0]->send_from) ?>
+                                            <?php 
+                                            $jsonSendFrom=json_decode($quriar_detail[0]->send_from,true);
+                                            //print_r($jsonSendFrom);
+                                            ?>
+                                            <div class="pull-left">
+                                            <div class="row">
+                                                <div class="col-md-4 text-left bolder">Name</div>
+                                                <div class="col-md-8 text-right"> : <?=$jsonSendFrom['send_from_full_name']?></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 text-left bolder">Phone</div>
+                                                <div class="col-md-8 text-right"> : <?=$jsonSendFrom['send_from_phone']?></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2 text-left bolder">Email</div>
+                                                <div class="col-md-10 text-right"> : <?=$jsonSendFrom['send_from_email']?></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 text-left bolder">Address</div>
+                                                <div class="col-md-8 text-right"> : <?=$jsonSendFrom['send_from_address']?></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-left bolder">Branch Name</div>
+                                                <div class="col-md-7 text-right"> : 
+                                                    <?=$obj->SelectAllByVal("branch","id",$jsonSendFrom['send_from_branch_id'],"branch_name")?>
+                                                        
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
                                         </address>
                                     </div>
                                     <div class="col-xs-6 text-right">
                                         <address>
                                             <strong>Receive From:</strong><br>
-                                            <?= html_entity_decode($quriar_detail[0]->receive_from) ?>
+                                            <?php 
+                                            $jsonReceiverFrom=json_decode($quriar_detail[0]->receive_from,true);
+                                            //print_r($jsonReceiverFrom);
+                                            ?>
+                                             <div class="pull-right">
+                                            <div class="row">
+                                                <div class="col-md-2 text-right  bolder">Name</div>
+                                                <div class="col-md-8 text-right"> : <?=$jsonReceiverFrom['receiver_from_full_name']?></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2 text-right  bolder">Phone</div>
+                                                <div class="col-md-8 text-right"> : <?=$jsonReceiverFrom['receiver_from_phone']?></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2 text-right bolder">Email</div>
+                                                <div class="col-md-8 text-right"> : <?=$jsonReceiverFrom['receiver_from_email']?></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2 text-right bolder">Address</div>
+                                                <div class="col-md-8 text-right"> : <?=$jsonReceiverFrom['receiver_from_address']?></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2 text-right bolder">Branch Name</div>
+                                                <div class="col-md-8 text-right"> : 
+                                                    <?=$obj->SelectAllByVal("branch","id",$jsonReceiverFrom['receiver_from_branch_id'],"branch_name")?>
+                                                        
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
                                         </address>
                                     </div>
-                                </div>
+                                
                                 <div class="row">
                                     <div class="col-xs-6">
                                     </div>
@@ -258,6 +329,22 @@ $plugin = new cmsPlugin();
                                                             $total = $quriar_receive_type_price + $delivery_type_price + $price;
                                                             ?></td>
                                                     </tr>
+                                                    <?php
+                                                    if(!empty((int)$quriar_detail[0]->conditional_price))
+                                                    {
+                                                    ?>
+                                                    <tr>
+                                                        <td class="thick-line"></td>
+                                                        <td class="thick-line"></td>
+                                                        <td class="no-line text-center"><strong>Conditional Price</strong></td>
+                                                        <td class="no-line text-right">Tk. <?php
+                                                            echo $quriar_detail[0]->conditional_price;
+                                                            $total += $quriar_detail[0]->conditional_price;
+                                                            ?></td>
+                                                    </tr>
+                                                    <?php 
+                                                    }
+                                                    ?>
                                                     <tr>
                                                         <td class="thick-line"></td>
                                                         <td class="thick-line"></td>

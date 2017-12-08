@@ -359,6 +359,7 @@ instead of the minified CSS loaded by default.
         $errmsg_arr[] = "<div class='errors alert alert-danger'> <i class='fa fa-exclamation-triangle'></i> " . $msg . " </div>";
         $error_flag = true;
         if ($error_flag) {
+            //session_regenerate_id();
             $_SESSION['ERRMSG_ARR'] = $errmsg_arr;
             session_write_close();
             header("location:" . $location);
@@ -396,6 +397,7 @@ instead of the minified CSS loaded by default.
     }
 
     function ShowMsg() {
+
         if (isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) > 0) {
             foreach ($_SESSION['ERRMSG_ARR'] as $msg) {
                 unset($_SESSION['ERRMSG_ARR']);

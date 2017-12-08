@@ -2,6 +2,7 @@
 include('class/auth.php');
 include('plugin/plugin.php');
 $plugin = new cmsPlugin();
+
 ?>
 <!doctype html>
 <!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -105,6 +106,7 @@ $plugin = new cmsPlugin();
                             receive_from: {type: "string"}, 
                             send_from: {type: "string"}, 
                             price: {type: "string"}, 
+                            conditional_price: {type: "string"}, 
                             quriar_status: {type: "string"}, 
                             date: {type: "string"}
                         }
@@ -127,6 +129,7 @@ $plugin = new cmsPlugin();
                     {field: "id", title: "#"}, 
                     {field: "tracking_no", title: "Tracking No"}, 
                     {field: "price", title: "Price"}, 
+                    {field: "conditional_price", title: "Conditional Price"}, 
                     {field: "quriar_status", title: "Quriar Status"},
                     {field: "date", title: "Record Added", width: "100px"},
                     {
