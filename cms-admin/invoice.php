@@ -528,7 +528,7 @@ if (isset($_POST['create'])) {
                                         }
                                     </style>
                                     <div class='col-sm-5 conditional_price'>
-                                        <input type='text' id='form-field-1' value="0" name='conditional_price' placeholder='Price' class='form-control' />
+                                        <input type='text' id='form-field-1' onkeyup="placevaluetoanother(this.value)" value="0" name='conditional_price' placeholder='Price' class='form-control' />
                                     </div>
                                 </div>
 
@@ -844,6 +844,11 @@ if (isset($_POST['create'])) {
                     $(".conditional_price").fadeOut();
                 }
             });
+
+            //alert(1);
+
+            
+
             $("select[name=category_id]").change(function () {
                 var category_id = $(this).val();
                 $.post("./controller/sub-category.php", {'category_id': category_id}, function (data) {
@@ -898,6 +903,10 @@ if (isset($_POST['create'])) {
                 {
                     $(".quriar_receive_type_id").fadeIn();
                 }
+                else
+                {
+                    $(".quriar_receive_type_id").fadeOut();
+                }
             });
 
             $("select[name=delivery_type_id]").change(function () {
@@ -905,6 +914,10 @@ if (isset($_POST['create'])) {
                 if ($(this).val() == 2)
                 {
                     $(".delivery_type_id").fadeIn();
+                }
+                else
+                {
+                    $(".delivery_type_id").fadeOut();
                 }
             });
 
@@ -1039,6 +1052,11 @@ if (isset($_POST['create'])) {
 
 
         });
+
+        function placevaluetoanother(pv)
+        {
+            $("input[name='total_conditional_quriar_cost']").val(pv);
+        }
 
 
         function SetDefaultSomeFeild()

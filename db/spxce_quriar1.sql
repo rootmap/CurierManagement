@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2017 at 12:46 PM
+-- Generation Time: Nov 25, 2017 at 09:53 PM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -785,7 +785,7 @@ CREATE TABLE IF NOT EXISTS `quriar_status` (
   `quriar_status` text COLLATE utf8_unicode_ci,
   `date` date DEFAULT NULL,
   `status` int(2) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `quriar_status`
@@ -863,10 +863,7 @@ INSERT INTO `quriar_status` (`id`, `tracking_no`, `quriar_status`, `date`, `stat
 (69, 'Q1511557648', 'Created By User', '2017-11-24', 1),
 (70, 'Q1511557753', 'Created By User', '2017-11-24', 1),
 (71, 'Q1511297997', 'Delivered', '2017-11-24', 1),
-(72, 'Q1511624789', 'Created By User', '2017-11-25', 1),
-(73, 'Q1511377394', 'Delivered', '2017-12-08', 1),
-(74, 'Q1511557753', 'On The Way', '2017-12-08', 1),
-(75, 'Q1511557753', 'Ready For Delivery', '2017-12-08', 1);
+(72, 'Q1511624789', 'Created By User', '2017-11-25', 1);
 
 -- --------------------------------------------------------
 
@@ -1110,7 +1107,7 @@ CREATE TABLE IF NOT EXISTS `user_page_access_mapping` (
   `page_link_file_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `date` date DEFAULT NULL,
   `status` int(2) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=318 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=299 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user_page_access_mapping`
@@ -1165,22 +1162,12 @@ INSERT INTO `user_page_access_mapping` (`id`, `user_type_id`, `page_name`, `page
 (290, 1, 'Blood Group List', 'blood_group_data.php', '2017-11-22', 1),
 (291, 1, 'New Service Point Report', 'service_point_report.php', '2017-11-22', 1),
 (292, 1, 'Service Point Report List', 'service_point_report_data.php', '2017-11-22', 1),
-(302, 2, 'New Cash On Delivery', 'cash_on_delivery.php', '2017-12-08', 1),
-(303, 2, 'Cash On Delivery List', 'cash_on_delivery_data.php', '2017-12-08', 1),
-(304, 2, 'New Quriar Receive Type', 'quriar_receive_type.php', '2017-12-08', 1),
-(305, 2, 'Quriar Receive Type List', 'quriar_receive_type_data.php', '2017-12-08', 1),
-(306, 2, 'New Invoice', 'invoice.php', '2017-12-08', 1),
-(307, 2, 'Invoice List', 'invoice_data.php', '2017-12-08', 1),
-(308, 2, 'New Quriar Send And Receive', 'quriar_send_and_receive.php', '2017-12-08', 1),
-(309, 2, 'Quriar Send And Receive List', 'quriar_send_and_receive_data.php', '2017-12-08', 1),
-(310, 2, 'New Quriar Status', 'quriar_status.php', '2017-12-08', 1),
-(311, 2, 'Quriar Status List', 'quriar_status_data.php', '2017-12-08', 1),
-(312, 2, 'New Receive Product Detail', 'receive_product_detail.php', '2017-12-08', 1),
-(313, 2, 'Receive Product Detail List', 'receive_product_detail_data.php', '2017-12-08', 1),
-(314, 2, 'New Delivery Product Detail', 'delivery_product_detail.php', '2017-12-08', 1),
-(315, 2, 'Delivery Product Detail List', 'delivery_product_detail_data.php', '2017-12-08', 1),
-(316, 2, 'New Service Point Report', 'service_point_report.php', '2017-12-08', 1),
-(317, 2, 'Service Point Report List', 'service_point_report_data.php', '2017-12-08', 1);
+(293, 2, 'New Cash On Delivery', 'cash_on_delivery.php', '2017-11-22', 1),
+(294, 2, 'Cash On Delivery List', 'cash_on_delivery_data.php', '2017-11-22', 1),
+(295, 2, 'New Invoice', 'invoice.php', '2017-11-22', 1),
+(296, 2, 'Invoice List', 'invoice_data.php', '2017-11-22', 1),
+(297, 2, 'New Service Point Report', 'service_point_report.php', '2017-11-22', 1),
+(298, 2, 'Service Point Report List', 'service_point_report_data.php', '2017-11-22', 1);
 
 -- --------------------------------------------------------
 
@@ -1482,7 +1469,7 @@ ALTER TABLE `quriar_send_and_receive`
 -- AUTO_INCREMENT for table `quriar_status`
 --
 ALTER TABLE `quriar_status`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=76;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT for table `receive_product_detail`
 --
@@ -1522,7 +1509,7 @@ ALTER TABLE `user_access_role`
 -- AUTO_INCREMENT for table `user_page_access_mapping`
 --
 ALTER TABLE `user_page_access_mapping`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=318;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=299;
 --
 -- AUTO_INCREMENT for table `user_type`
 --

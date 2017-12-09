@@ -329,6 +329,13 @@ if(empty($quriar_detail_count))
                                                             $total = $quriar_receive_type_price + $delivery_type_price + $price;
                                                             ?></td>
                                                     </tr>
+                                                    
+                                                    <tr>
+                                                        <td class="thick-line"></td>
+                                                        <td class="thick-line"></td>
+                                                        <td class="no-line text-center"><strong>Total</strong></td>
+                                                        <td class="no-line text-right">Tk. <?= $total ?></td>
+                                                    </tr>
                                                     <?php
                                                     if(!empty((int)$quriar_detail[0]->conditional_price))
                                                     {
@@ -339,18 +346,11 @@ if(empty($quriar_detail_count))
                                                         <td class="no-line text-center"><strong>Conditional Price</strong></td>
                                                         <td class="no-line text-right">Tk. <?php
                                                             echo $quriar_detail[0]->conditional_price;
-                                                            $total += $quriar_detail[0]->conditional_price;
                                                             ?></td>
                                                     </tr>
                                                     <?php 
                                                     }
                                                     ?>
-                                                    <tr>
-                                                        <td class="thick-line"></td>
-                                                        <td class="thick-line"></td>
-                                                        <td class="no-line text-center"><strong>Total</strong></td>
-                                                        <td class="no-line text-right">Tk. <?= $total ?></td>
-                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
