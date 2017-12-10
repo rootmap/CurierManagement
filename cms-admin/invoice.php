@@ -60,6 +60,9 @@ if (isset($_POST['create'])) {
             $insert_st = array('tracking_no' => $tracking_no, 'quriar_status' => $quriar_status, 'date' => date('Y-m-d'), 'status' => 1);
             $obj->insert("quriar_status", $insert_st);
 
+        $insert_payment_status=array('tracking_no'=>$tracking_no,'status'=>$payment_status,'date'=>date('Y-m-d'));
+            $obj->insert("invoice_payment", $insert_payment_status);
+
             $checkAlreadyPriceAdded = $obj->FlyQuery("SELECT * FROM product_price WHERE category_id='$category_id' AND sub_category_id='$sub_category_id' AND unit_id='$unit_id' AND size_id='$size_id' AND product_type_id='$product_type_id'");
             if (empty($checkAlreadyPriceAdded)) {
                 $obj->insert("product_price", array("category_id" => $category_id, "sub_category_id" => $sub_category_id, "unit_id" => $unit_id, "size_id" => $size_id, "product_type_id" => $product_type_id, "price" => $price));
@@ -88,6 +91,8 @@ if (isset($_POST['create'])) {
             $update_merge_array_quri = array_merge($updatearrayQuri, $insertQuri);
             $obj->update("quriar_send_and_receive", $insertQuri);
 
+            $insert_payment_status=array('tracking_no'=>$tracking_no,'status'=>$payment_status,'date'=>date('Y-m-d'));
+            $obj->insert("invoice_payment", $insert_payment_status);
 
             $plugin->Success("Successfully Updated", $obj->filename());
         } else {
@@ -400,7 +405,43 @@ if (isset($_POST['create'])) {
                                                 foreach ($sqlquriar_status as $quriar_status):
                                                     ?><option <?php if ($ex_quriar_status == $quriar_status) { ?> selected='selected' <?php } ?> value='<?= $quriar_status ?>'><?= $quriar_status ?></option><?php endforeach; ?><?php } ?></select>
                                     </div>
-                                </div><div class="form-group">
+                                </div>
+
+                                <div class='form-group col-md-6'>
+                                    <label  for="inputEmail3" class="col-sm-4 control-label"> 
+                                        Select Payment Status  
+                                    </label>
+
+                                    <div class='col-sm-7'>
+                                        <select id='form-field-1' name='payment_status' class='form-control'>
+                                            <option value='0'>Please Select</option>
+                                            <?php   
+                                                $exstatus=$obj->SelectAllByVal("invoice_payment","tracking_no",$tracking_no,"status");
+                                                $SSarrstatus='Unpaid,Paid';
+                                                $sqlstatus=explode(',',$SSarrstatus);
+                                                if(!empty($sqlstatus))
+                                                {
+                                                    foreach ($sqlstatus as $status): 
+                                                        ?>
+                                                        <option 
+                                                        <?php 
+                                                        if($exstatus==$status){
+                                                            ?>
+                                                            selected="selected" 
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                         value='<?=$status?>'><?=$status?></option>
+                                                        <?php 
+                                                    endforeach; ?>
+                                                <?php 
+                                                } 
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <button  onclick="javascript:return confirm('Do You Want change/update These Record?')"  type="submit" name="update" class="btn btn-primary">Save Change</button>
                                         <button type="reset" class="btn btn-danger">Reset</button>
@@ -788,7 +829,32 @@ if (isset($_POST['create'])) {
                                     <div class='col-sm-7'>
                                         <input type='number' readonly="readonly" id='form-field-1' name='total_conditional_quriar_cost' value="0" placeholder='Type Quriar Cost/Price' class='form-control' />
                                     </div>
-                                </div>      
+                                </div> 
+
+                                <div class='form-group col-md-6'>
+                                    <label  for="inputEmail3" class="col-sm-4 control-label"> 
+                                        Select Payment Status  
+                                    </label>
+
+                                    <div class='col-sm-7'>
+                                        <select id='form-field-1' name='payment_status' class='form-control'>
+                                            <option value='0'>Please Select</option>
+                                            <?php   
+                                                $SSarrstatus='Unpaid,Paid';
+                                                $sqlstatus=explode(',',$SSarrstatus);
+                                                if(!empty($sqlstatus))
+                                                {
+                                                    foreach ($sqlstatus as $status): 
+                                                        ?>
+                                                        <option value='<?=$status?>'><?=$status?></option>
+                                                        <?php 
+                                                    endforeach; ?>
+                                                <?php 
+                                                } 
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>     
 
 
                                 <div class="clearfix" style="width: 100%; display: block; height: 1px; clear: both;"></div>

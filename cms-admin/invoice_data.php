@@ -48,6 +48,7 @@ $plugin = new cmsPlugin();
         <a class="k-button k-button-icontext k-grid-edit" href="invoice.php?edit=#= id#"><span class="k-icon k-edit"></span>Edit</a>
         <a class="k-button k-button-icontext k-grid-edit" href="quriar.php?view=#= tracking_no#"><span class="k-icon k-edit"></span>View</a>
         <a class="k-button k-button-icontext k-grid-edit" href="quriar_status.php?qst=#= tracking_no#"><span class="k-icon k-edit"></span>New Status</a>
+        <a class="k-button k-button-icontext k-grid-edit" href="invoice_payment.php?qst=#= tracking_no#"><span class="k-icon k-edit"></span>Change Payment Status</a>
     </script>
     <script id="delete_invoice" type="text/x-kendo-template">
         <a class="k-button k-button-icontext k-grid-delete" onclick="javascript:deleteClick(#= id #);" ><span class="k-icon k-delete"></span>Delete</a>
@@ -108,6 +109,7 @@ $plugin = new cmsPlugin();
                             price: {type: "string"}, 
                             conditional_price: {type: "string"}, 
                             quriar_status: {type: "string"}, 
+                            payment_status: {type: "string"}, 
                             date: {type: "string"}
                         }
                     }
@@ -131,6 +133,7 @@ $plugin = new cmsPlugin();
                     {field: "price", title: "Price"}, 
                     {field: "conditional_price", title: "Conditional Price"}, 
                     {field: "quriar_status", title: "Quriar Status"},
+                    {field: "payment_status", title: "Payment Status"},
                     {field: "date", title: "Record Added", width: "100px"},
                     {
                         title: "Edit",
